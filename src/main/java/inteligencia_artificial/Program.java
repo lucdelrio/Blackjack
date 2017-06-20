@@ -1,6 +1,6 @@
 package inteligencia_artificial;
 
-public class QLearningTest {
+public class Program {
 
     public static void main(String[] args) {
         
