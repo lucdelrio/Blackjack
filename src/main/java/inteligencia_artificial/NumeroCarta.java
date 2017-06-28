@@ -1,11 +1,11 @@
 package inteligencia_artificial;
 /**
  * 
- * Enum to represent a Rank of a card
+ * Enum to represent a NumeroCarta of a card
  *
  */
-public enum Rank {
-    Deuce,
+public enum NumeroCarta {
+    Two,
     Three,
     Four,
     Five,
@@ -17,5 +17,5 @@ public enum Rank {
     Jack,
     Queen,
     King,
-    Ace
+    As
 }

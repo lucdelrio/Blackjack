@@ -1,10 +1,10 @@
 package inteligencia_artificial;
 /**
  * 
- * Enum to represent a Suit of a card
+ * Enum to represent a Palo of a card
  *
  */
-public enum Suit {
+public enum Palo {
     Picas,
     Diamantes,
     Corazones,

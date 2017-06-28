@@ -127,10 +127,10 @@ public class QLearningPolicy implements Policy {
             
            int cc = 0;
            
-           List<Card> cards = state.getVisibleCards();
-           for (Card c : cards) {
-               if (c.isHighCard()) { cc --; }
-               else if (c.isLowCard()) { cc ++; }
+           List<Carta> cartas = state.getVisibleCards();
+           for (Carta c : cartas) {
+               if (c.cartaAlta()) { cc --; }
+               else if (c.cartaBaja()) { cc ++; }
            }
             
             return new PointsState(h.numberOfAces(), h.handValueWithoutAces(), action, cc);

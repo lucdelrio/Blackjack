@@ -6,8 +6,8 @@ import java.util.Random;
 
 public class Deck implements Cloneable {
     
-    private List<Card> undealtCards;
-    private List<Card> dealtCards;
+    private List<Carta> undealtCards;
+    private List<Carta> dealtCards;
     
     /**
      * Constructor for a new Deck
@@ -15,25 +15,25 @@ public class Deck implements Cloneable {
      */
     public Deck (int n, boolean shuffle) {
         
-        undealtCards = new ArrayList<Card>();
+        undealtCards = new ArrayList<Carta>();
         for (int i=0; i<n; i++) {
             undealtCards.addAll(createDeck());
         }
-        dealtCards = new ArrayList<Card>();
+        dealtCards = new ArrayList<Carta>();
         
         if (shuffle) {
             shuffle();
         }
     }
     
-    public List<Card> getDealtCards () {
+    public List<Carta> getDealtCards () {
         return dealtCards;
     }
     
-    private Deck(List<Card> ud_cards, List<Card> d_cards) {
+    private Deck(List<Carta> ud_cards, List<Carta> d_cartas) {
         
         this.undealtCards = ud_cards;
-        this.dealtCards = d_cards;
+        this.dealtCards = d_cartas;
     }
     
     /**
@@ -41,13 +41,13 @@ public class Deck implements Cloneable {
      */
     public void shuffle () {
         
-        List<Card> cList = new ArrayList<Card>();
+        List<Carta> cList = new ArrayList<Carta>();
         Random rand = new Random();
         while(!undealtCards.isEmpty()) {
             
             int i = rand.nextInt(undealtCards.size());
             
-            Card c = undealtCards.remove(i);
+            Carta c = undealtCards.remove(i);
             cList.add(c);
         }
         
@@ -69,14 +69,14 @@ public class Deck implements Cloneable {
     /**
      * Deals one card and moves it to the un-dealt stack, so it isn't
      * dealt again.
-     * @return a Card
+     * @return a Carta
      */
-    public Card deal () {
+    public Carta deal () {
         
         shuffle();
         shuffle();
         shuffle();
-        Card c = undealtCards.remove(0);
+        Carta c = undealtCards.remove(0);
         dealtCards.add(c);
         
         return c;
@@ -86,15 +86,15 @@ public class Deck implements Cloneable {
      * Creates a Deck in sorted order
      * @return a Deck in sorted order
      */
-    static List<Card> createDeck () {
+    static List<Carta> createDeck () {
         
-        List<Card> cList = new ArrayList<Card>();
+        List<Carta> cList = new ArrayList<Carta>();
      
         for (int suit=0; suit < 4; suit++) {
             
             for (int rank=0; rank < 13; rank++) {
                 
-                cList.add(new Card(suit, rank));
+                cList.add(new Carta(suit, rank));
             }
         }
         
@@ -104,18 +104,18 @@ public class Deck implements Cloneable {
     @Override
     public Deck clone() {
         
-        List<Card> ud_cards = new ArrayList<Card>();
-        List<Card> d_cards = new ArrayList<Card>();
+        List<Carta> ud_cards = new ArrayList<Carta>();
+        List<Carta> d_cartas = new ArrayList<Carta>();
         
-        for (Card c : undealtCards) {
-            ud_cards.add(c.clone());
+        for (Carta c : undealtCards) {
+            ud_cards.add(c.clonarCarta());
         }
         
-        for (Card c : dealtCards) {
-            d_cards.add(c.clone());
+        for (Carta c : dealtCards) {
+            d_cartas.add(c.clonarCarta());
         }
         
-        return new Deck(ud_cards, d_cards);
+        return new Deck(ud_cards, d_cartas);
     }
     
     // For internal testing
@@ -123,7 +123,7 @@ public class Deck implements Cloneable {
         
         Deck d = new Deck(1, true);
 
-        for (Card c : d.undealtCards) {
+        for (Carta c : d.undealtCards) {
             System.out.print(c + " ");
         }
     }

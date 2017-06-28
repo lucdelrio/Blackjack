@@ -1,3 +1,5 @@
+package inteligencia_artificial;
+
 public class Configuration {
     
     public static final int BetAmount = 100;

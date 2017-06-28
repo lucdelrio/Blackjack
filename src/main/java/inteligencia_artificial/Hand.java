@@ -6,38 +6,38 @@ import java.util.ArrayList;
 public class Hand implements Cloneable {
 
     private final Player player;
-    private final List<Card> cards;
+    private final List<Carta> cartas;
     private boolean stay;
     
     Hand(Player p) {
         
         player = p;
-        cards = new ArrayList<Card>();
+        cartas = new ArrayList<Carta>();
     }
     
-    private Hand (Player p, List<Card> cs, boolean stay) {
+    private Hand (Player p, List<Carta> cs, boolean stay) {
         
         this.player = p;
-        this.cards = cs;
+        this.cartas = cs;
         this.stay = stay;
     }
     
-    public void addCard(Card c) {
+    public void addCard(Carta c) {
         
-        cards.add(c);
+        cartas.add(c);
     }
     
     public void clearCards () {
-        cards.clear();
+        cartas.clear();
         stay = false;
     }
     
-    public List<Card> getCards () {
+    public List<Carta> getCartas() {
         
-        List<Card> ccs = new ArrayList<Card>();
+        List<Carta> ccs = new ArrayList<Carta>();
         
-        for (Card c : cards) {
-            ccs.add(c.clone());
+        for (Carta c : cartas) {
+            ccs.add(c.clonarCarta());
         }
         return ccs;
     }
@@ -65,7 +65,7 @@ public class Hand implements Cloneable {
      * @return true iff player's hand is a blackjack
      */
     public boolean isBlackjack () {
-        return cards.size() == 2 && handValue() == 21;
+        return cartas.size() == 2 && handValue() == 21;
     }
     
     /**
@@ -102,8 +102,8 @@ public class Hand implements Cloneable {
     public int numberOfAces () {
         int number = 0;
         
-        for (Card c : cards) {
-            if (c.getRank() == Rank.Ace)
+        for (Carta c : cartas) {
+            if (c.getNumero() == NumeroCarta.As)
                 number ++;
         }
         
@@ -114,10 +114,10 @@ public class Hand implements Cloneable {
         
         int val = 0;
         
-        for (Card c : cards) {
+        for (Carta c : cartas) {
             
-            if (c.getRank() != Rank.Ace) {
-                val += c.baseValue();
+            if (c.getNumero() != NumeroCarta.As) {
+                val += c.numeroCarta();
             }
         }
         
@@ -127,10 +127,10 @@ public class Hand implements Cloneable {
     @Override
     public Hand clone () {
         
-        List<Card> clonedCards = new ArrayList<Card>();
+        List<Carta> clonedCards = new ArrayList<Carta>();
         
-        for (Card c : this.cards) {
-            clonedCards.add(c.clone());
+        for (Carta c : this.cartas) {
+            clonedCards.add(c.clonarCarta());
         }
         
         return new Hand(this.player, clonedCards, this.stay);
@@ -140,7 +140,7 @@ public class Hand implements Cloneable {
     public String toString () {
         String str = "Hand: ";
         
-        for (Card c : cards) {
+        for (Carta c : cartas) {
             str += c.toString() + " ";
         }
         

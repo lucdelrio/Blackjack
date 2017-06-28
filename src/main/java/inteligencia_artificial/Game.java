@@ -33,7 +33,7 @@ class Game implements Cloneable {
         return hands;
     }
     
-    public List<Card> getVisibleCards () {
+    public List<Carta> getVisibleCards () {
         
         return deck.getDealtCards();
     }
@@ -166,7 +166,7 @@ class Game implements Cloneable {
 
         if (a == Action.Hit) {
 
-            Card c = clonedGame.deck.deal();
+            Carta c = clonedGame.deck.deal();
             h.addCard(c);
             if (h.isBust() || h.isTwentyOne() || h.isBlackjack()) {
                 clonedGame.turnIndex = (clonedGame.turnIndex + 1) % clonedGame.hands.size();
