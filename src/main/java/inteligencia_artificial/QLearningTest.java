@@ -10,7 +10,7 @@ public class QLearningTest {
         int games               = 500;
        
         QLearningPolicy qPolicy = new QLearningPolicy(false);
-        Player agent = new Player(0, "Agent" , qPolicy );
+        Jugador agent = new Jugador(0, "Agent" , qPolicy );
         
         System.out.println("******** Training ********");
         
@@ -37,14 +37,14 @@ public class QLearningTest {
         playRealgames(agent, qPolicy, games);
     }
     
-    public static void trainAgent (Player agent, QLearningPolicy policy, int ITERATIONS) {
+    public static void trainAgent (Jugador agent, QLearningPolicy policy, int ITERATIONS) {
         
-        Game episode = new Game(agent);
+        Juego episode = new Juego(agent);
 
         for (int i=0; i < ITERATIONS; i++) {
             
 
-            episode = Game.playRound(episode);
+            episode = Juego.playRound(episode);
             
             //episode.printResult();
             episode.reset();
@@ -56,7 +56,7 @@ public class QLearningTest {
         }
     }
     
-    public static void playRealgames (Player agent, QLearningPolicy policy, int ITERATIONS) {
+    public static void playRealgames (Jugador agent, QLearningPolicy policy, int ITERATIONS) {
         
         int totalBet = 100 * ITERATIONS;
         int totalReward = 0;
@@ -64,11 +64,11 @@ public class QLearningTest {
         int losses = 0;
         int draws = 0;
         
-        Game g = new Game(agent);
+        Juego g = new Juego(agent);
         for (int i=0; i < ITERATIONS; i++) {
             
             
-            g = Game.playRound(g);
+            g = Juego.playRound(g);
             
             // notify players
             //g.printResult();

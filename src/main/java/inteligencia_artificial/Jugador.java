@@ -2,25 +2,25 @@ package inteligencia_artificial;
 
 import java.util.List;
 
-public class Player {
+public class Jugador {
     
     private final int     id;
-    private final String  name;
+    private final String nombre;
     private final Policy  policy;
     
 
-    public Player (int id, String name, Policy policy) {
+    public Jugador(int id, String nombre, Policy policy) {
         
         this.id = id;
-        this.name = name;
+        this.nombre = nombre;
         this.policy = policy;
     }
     
-    public Player (int id, String name) {
+    public Jugador(int id, String nombre) {
         
         this.id = id;
-        this.name = name;
-        this.policy = new DealerPolicy();
+        this.nombre = nombre;
+        this.policy = new BancaPolicy();
     }
     
     /**
@@ -31,38 +31,38 @@ public class Player {
     }
     
     /**
-     * @return name of player
+     * @return nombre of player
      */
-    public String getName () {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
     
-    public Action chooseAction(List<Action> actions, Game g) {
+    public Accion setAccion(List<Accion> acciones, Juego g) {
         
-        return this.policy.chooseAction(g, this, actions);
+        return this.policy.elegirAccion(g, this, acciones);
     }
     
-    public void observe(Game g, Action action, Game nextState, int reward) {
+    public void observe(Juego g, Accion accion, Juego nextState, int reward) {
         
-//        if (this.policy instanceof QLearningPolicy && !this.getName().equals("Dealer")) {
+//        if (this.policy instanceof QLearningPolicy && !this.getNombre().equals("Dealer")) {
 //            printObservation(g, action, this, nextState, reward);
 //        }
-        this.policy.observe(g, action, this, nextState, reward);
+        this.policy.observe(g, accion, this, nextState, reward);
     }
     
-    private static void printObservation(Game g, Action action, Player p, Game nextState, int reward) {
+    private static void printObservation(Juego g, Accion accion, Jugador p, Juego nextState, int reward) {
         
         String str = "Observing: ";
         
         Hand pHand = g.getHandFromPlayer(p);
         
         str += p.toString() ;
-        str += " takes action: " + action;
+        str += " takes accion: " + accion;
         str += "\nwith hand " + pHand;
         str += "\nleading to hand " + nextState.getHandFromPlayer(p);
         str += "\nearning reward " + reward;
         
-        if (pHand.handValue() == 18 && pHand.numberOfAces() == 0 && action == Action.Hit) {
+        if (pHand.valorDeLaMano() == 18 && pHand.numberOfAces() == 0 && accion == Accion.Pedir) {
         
             if (reward > 0) {
                 
@@ -73,10 +73,10 @@ public class Player {
     }
     
     /**
-     * String representation of Player
+     * String representation of Jugador
      */
     @Override
     public String toString () {
-        return name;
+        return nombre;
     }   
 }

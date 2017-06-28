@@ -4,21 +4,21 @@ public class PointsState implements Comparable<PointsState> {
 
     private int numberOfAces;
     private int points;
-    private Action action;
+    private Accion accion;
     private int cardCount;
     
-    public PointsState(int aces, int points, Action action) {
+    public PointsState(int aces, int points, Accion accion) {
         this.numberOfAces = aces;
         this.points = points;
-        this.action = action;
+        this.accion = accion;
         this.cardCount = 0;
     }
     
-    public PointsState(int aces, int points, Action action, int cardCount) {
+    public PointsState(int aces, int points, Accion accion, int cardCount) {
         
         this.numberOfAces = aces;
         this.points = points;
-        this.action = action;
+        this.accion = accion;
         this.cardCount = cardCount;
     }
     
@@ -30,13 +30,13 @@ public class PointsState implements Comparable<PointsState> {
         return points;
     }
 
-    public Action getAction() {
-        return action;
+    public Accion getAccion() {
+        return accion;
     }
     
     @Override
     public String toString () {
-        String str = "" + numberOfAces + "-" + points + "-" + action.toString()
+        String str = "" + numberOfAces + "-" + points + "-" + accion.toString()
                    + cardCount;
         
         return str;
@@ -51,7 +51,7 @@ public class PointsState implements Comparable<PointsState> {
             
             return other.numberOfAces == this.numberOfAces &&
                    other.points == this.points && 
-                   other.action == this.action &&
+                   other.accion == this.accion &&
                    other.cardCount == this.cardCount;
         }
         
@@ -60,7 +60,7 @@ public class PointsState implements Comparable<PointsState> {
     
     @Override
     public int hashCode () {
-        int n = action == Action.Hit ? 10 : 20;
+        int n = accion == Accion.Pedir ? 10 : 20;
         
         return numberOfAces * 1000 + points * 100 + n + cardCount * 10000;
     }
@@ -86,9 +86,9 @@ public class PointsState implements Comparable<PointsState> {
                 else if (this.cardCount > other.cardCount)
                     return 1;
                 else {
-                    if (this.action == Action.Hit && other.action == Action.Stay) 
+                    if (this.accion == Accion.Pedir && other.accion == Accion.Plantarse)
                         return -1;
-                    else if (this.action == Action.Stay && other.action == Action.Hit)
+                    else if (this.accion == Accion.Plantarse && other.accion == Accion.Pedir)
                         return 1;
                 }
             }

@@ -5,13 +5,13 @@ import java.util.Random;
 public class BlackjackUtil {
 
     public static double getNumber() {
-        Random generator = new Random();
-        double number = generator.nextDouble();
+        Random generadorDeNumero = new Random();
+        double number = generadorDeNumero.nextDouble();
         return number;
     }
 
-    public static Action getRandomAction(List<Action> legalActions){
-        Random randomizer = new Random();
-        return legalActions.get(randomizer.nextInt(legalActions.size()));
+    public static Accion getAccionRandom(List<Accion> listaDeAcciones){
+        Random random = new Random();
+        return listaDeAcciones.get(random.nextInt(listaDeAcciones.size()));
     }
 }

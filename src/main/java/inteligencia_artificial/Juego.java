@@ -5,26 +5,26 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
-class Game implements Cloneable {
+class Juego implements Cloneable {
 
     private final List<Hand> hands; // the hands involved in the game
     private int turnIndex;          // the index of the hand whose turn it is to move
-    private Deck deck;              // the deck of cards used in the game
+    private Mesa mesa;              // the mesa of cards used in the game
 
     /**
-     * Constructor for Game
+     * Constructor for Juego
      * @param ps - the list of players in the game (other than the dealer)
      */
-    public Game(List<Player> ps) {
+    public Juego(List<Jugador> ps) {
 
         this.hands = new ArrayList<Hand>();
 
-        for (Player p : ps) {
+        for (Jugador p : ps) {
             this.hands.add(new Hand(p));
         }
-        this.hands.add(new Hand(new Player(0, "Dealer")));
+        this.hands.add(new Hand(new Jugador(0, "Dealer")));
         turnIndex = 0;
-        deck = new Deck(2, true);
+        mesa = new Mesa(2, true);
 
         initialize();
     }
@@ -35,14 +35,14 @@ class Game implements Cloneable {
     
     public List<Carta> getVisibleCards () {
         
-        return deck.getDealtCards();
+        return mesa.getCartasRepartidas();
     }
 
     /**
-     * Constructor for Game
+     * Constructor for Juego
      * @param p - the player in the game (other than the dealer)
      */
-    public Game(Player p) {
+    public Juego(Jugador p) {
 
         this(makeList(p));
     }
@@ -55,10 +55,10 @@ class Game implements Cloneable {
         return ps;
     }
 
-    private Game(List<Hand> hands, int turnIndex, Deck deck) {
+    private Juego(List<Hand> hands, int turnIndex, Mesa mesa) {
         this.hands = hands;
         this.turnIndex = turnIndex;
-        this.deck = deck;
+        this.mesa = mesa;
     }
     
     public int getBestHandValue () {
@@ -66,7 +66,7 @@ class Game implements Cloneable {
         int value = 0;
         for (int i=0; i<(hands.size()-1); i++) {
             
-            int currentValue = hands.get(i).handValue();
+            int currentValue = hands.get(i).valorDeLaMano();
             
             if (currentValue > value && currentValue <= 21) {
                 value = currentValue;
@@ -80,10 +80,10 @@ class Game implements Cloneable {
      * @param p - a player involved in the game
      * @return the player's hand
      */
-    public Hand getHandFromPlayer(Player p) {
+    public Hand getHandFromPlayer(Jugador p) {
 
         for (Hand h : hands) {
-            if (p.equals(h.getPlayer())) {
+            if (p.equals(h.getJugador())) {
                 return h;
             }
         }
@@ -109,18 +109,18 @@ class Game implements Cloneable {
         
         int requiredCards = 10 * hands.size();
         
-        return deck.remainingCards() < requiredCards;
+        return mesa.remainingCards() < requiredCards;
     }
     
     public void redeck () {
-        deck.reset();
+        mesa.reset();
     }
 
     /**
      * @param p - a player
      * @return - the reward earned by the player
      */
-    public int getReward (Player p) {
+    public int getReward (Jugador p) {
 
         if (hasGameEnded()) {
 
@@ -136,18 +136,18 @@ class Game implements Cloneable {
     /**
      * @return the player whose turn it is to act
      */
-    public Player getPlayerToAct () {
-        return hands.get(turnIndex).getPlayer();
+    public Jugador getPlayerToAct () {
+        return hands.get(turnIndex).getJugador();
     }
 
     /**
      * @return list of actions available to the player to act
      */
-    public List<Action> getNextActions () {
+    public List<Accion> getNextActions () {
 
-        List<Action> actions = new ArrayList<Action>();
+        List<Accion> actions = new ArrayList<Accion>();
 
-        for (Action m : Action.values()) {
+        for (Accion m : Accion.values()) {
             actions.add(m);
         }
 
@@ -158,21 +158,21 @@ class Game implements Cloneable {
      * @param p - the player to act
      * @param a - the action performed by the player to act
      */
-    public Game performAction (Player p, Action a) {
+    public Juego performAction (Jugador p, Accion a) {
 
-        Game clonedGame = this.clone();
+        Juego clonedGame = this.clone();
 
         Hand h = clonedGame.getHandFromPlayer(p);
 
-        if (a == Action.Hit) {
+        if (a == Accion.Pedir) {
 
-            Carta c = clonedGame.deck.deal();
+            Carta c = clonedGame.mesa.darCarta();
             h.addCard(c);
             if (h.isBust() || h.isTwentyOne() || h.isBlackjack()) {
                 clonedGame.turnIndex = (clonedGame.turnIndex + 1) % clonedGame.hands.size();
             }
         }
-        else if (a == Action.Stay) {
+        else if (a == Accion.Plantarse) {
             h.setIsStay(true);
             clonedGame.turnIndex = (clonedGame.turnIndex + 1) % clonedGame.hands.size();
         }
@@ -180,29 +180,29 @@ class Game implements Cloneable {
         return clonedGame;
     }
     
-    public Game redealToDealer () {
+    public Juego redealToDealer () {
         
-        Game clonedGame = this.clone();
+        Juego clonedGame = this.clone();
         
         Hand dealerHand = clonedGame.hands.get(clonedGame.hands.size() - 1);
         dealerHand.clearCards();
-        dealerHand.addCard(clonedGame.deck.deal());
-        dealerHand.addCard(clonedGame.deck.deal());
+        dealerHand.addCard(clonedGame.mesa.darCarta());
+        dealerHand.addCard(clonedGame.mesa.darCarta());
 
         return clonedGame;
     }
 
     @Override
-    public Game clone() {
+    public Juego clone() {
 
         List<Hand> clonedHands = new ArrayList<Hand>();
 
         for (Hand h : this.hands) {
             clonedHands.add(h.clone());
         }
-        Deck clonedDeck =   this.deck.clone();
+        Mesa clonedDeck =   this.mesa.clone();
 
-        return new Game(clonedHands, this.turnIndex, clonedDeck);
+        return new Juego(clonedHands, this.turnIndex, clonedDeck);
     }
 
     // Initializes the game, by dealing two cards to each player
@@ -214,7 +214,7 @@ class Game implements Cloneable {
 
             for (int i=0; i<2; i++) {
 
-                h.addCard(deck.deal());
+                h.addCard(mesa.darCarta());
             }
             
             if (h.isTwentyOne() || h.isBlackjack()) {
@@ -240,7 +240,7 @@ class Game implements Cloneable {
         System.out.println("------------------------------------");
 
         for (Hand h : hands) {
-            Player p = h.getPlayer();
+            Jugador p = h.getJugador();
 
             System.out.print(p + "'s " + h + "\n");
         }
@@ -250,7 +250,7 @@ class Game implements Cloneable {
 
             if (h != dealer) {
 
-                Player p = h.getPlayer();
+                Jugador p = h.getJugador();
                 int r = getReward(p);
                 String result;
 
@@ -270,31 +270,31 @@ class Game implements Cloneable {
     private int calculateReward (Hand p, Hand dealerHand) {
 
         if (p.isBlackjack() && !dealerHand.isBlackjack()) {
-            return (int)(Configuration.BetAmount * 1.5);
+            return (int)(Configuracion.BetAmount * 1.5);
         }
-        else if (p.isBust() || (!dealerHand.isBust() && p.handValue() < dealerHand.handValue())) {
-            return -Configuration.BetAmount;
+        else if (p.isBust() || (!dealerHand.isBust() && p.valorDeLaMano() < dealerHand.valorDeLaMano())) {
+            return -Configuracion.BetAmount;
         }
-        else if (dealerHand.isBust() || p.handValue() > dealerHand.handValue()) {
-            return Configuration.BetAmount;
+        else if (dealerHand.isBust() || p.valorDeLaMano() > dealerHand.valorDeLaMano()) {
+            return Configuracion.BetAmount;
         }
 
         return 0;
     }
 
-    public static Game playRound (Game g) {
+    public static Juego playRound (Juego g) {
         
-        Map<Player, Game> previousGameDict = new HashMap<Player, Game>();
-        Map<Player, Game> nextGameDict = new HashMap<Player, Game>();
-        Map<Player, Action> actionsDict = new HashMap<Player, Action>();
+        Map<Jugador, Juego> previousGameDict = new HashMap<Jugador, Juego>();
+        Map<Jugador, Juego> nextGameDict = new HashMap<Jugador, Juego>();
+        Map<Jugador, Accion> actionsDict = new HashMap<Jugador, Accion>();
 
         while(!g.hasGameEnded()) {
 
-            Player p = g.getPlayerToAct();
-            List<Action> actions = g.getNextActions();
+            Jugador p = g.getPlayerToAct();
+            List<Accion> actions = g.getNextActions();
 
-            Action chosen = p.chooseAction(actions, g);
-            Game nextState = g.performAction(p, chosen);
+            Accion chosen = p.setAccion(actions, g);
+            Juego nextState = g.performAction(p, chosen);
 
             previousGameDict.put(p, g);
             actionsDict.put(p, chosen);
@@ -302,7 +302,7 @@ class Game implements Cloneable {
             
             for(Hand h : g.getHands()) {
 
-                Player ep = h.getPlayer();
+                Jugador ep = h.getJugador();
 
                 if (previousGameDict.containsKey(ep)) {
 

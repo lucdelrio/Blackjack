@@ -5,19 +5,19 @@ import java.util.ArrayList;
 
 public class Hand implements Cloneable {
 
-    private final Player player;
+    private final Jugador jugador;
     private final List<Carta> cartas;
     private boolean stay;
     
-    Hand(Player p) {
+    Hand(Jugador p) {
         
-        player = p;
+        jugador = p;
         cartas = new ArrayList<Carta>();
     }
     
-    private Hand (Player p, List<Carta> cs, boolean stay) {
+    private Hand (Jugador p, List<Carta> cs, boolean stay) {
         
-        this.player = p;
+        this.jugador = p;
         this.cartas = cs;
         this.stay = stay;
     }
@@ -42,8 +42,8 @@ public class Hand implements Cloneable {
         return ccs;
     }
     
-    public Player getPlayer () {
-        return player;
+    public Jugador getJugador() {
+        return jugador;
     }
     
     public boolean isStay () {
@@ -55,30 +55,30 @@ public class Hand implements Cloneable {
     }
     
     /**
-     * @return true iff player's hand has gone bust
+     * @return true iff jugador's hand has gone bust
      */
     public boolean isBust () {
-        return handValue() > 21;
+        return valorDeLaMano() > 21;
     }
     
     /**
-     * @return true iff player's hand is a blackjack
+     * @return true iff jugador's hand is a blackjack
      */
     public boolean isBlackjack () {
-        return cartas.size() == 2 && handValue() == 21;
+        return cartas.size() == 2 && valorDeLaMano() == 21;
     }
     
     /**
-     * @return true iff the player's hand value is 21
+     * @return true iff the jugador's hand value is 21
      */
     public boolean isTwentyOne () {
-        return handValue() == 21;
+        return valorDeLaMano() == 21;
     }
     
     /**
-     * @return hand value of player
+     * @return hand value of jugador
      */
-    public int handValue () {
+    public int valorDeLaMano() {
         
         int fixedValue = handValueWithoutAces();
         int numberOfAces = numberOfAces();
@@ -103,7 +103,7 @@ public class Hand implements Cloneable {
         int number = 0;
         
         for (Carta c : cartas) {
-            if (c.getNumero() == NumeroCarta.As)
+            if (c.getNumeroCarta() == NumeroCarta.As)
                 number ++;
         }
         
@@ -116,7 +116,7 @@ public class Hand implements Cloneable {
         
         for (Carta c : cartas) {
             
-            if (c.getNumero() != NumeroCarta.As) {
+            if (c.getNumeroCarta() != NumeroCarta.As) {
                 val += c.numeroCarta();
             }
         }
@@ -133,7 +133,7 @@ public class Hand implements Cloneable {
             clonedCards.add(c.clonarCarta());
         }
         
-        return new Hand(this.player, clonedCards, this.stay);
+        return new Hand(this.jugador, clonedCards, this.stay);
     }
     
     @Override
@@ -144,7 +144,7 @@ public class Hand implements Cloneable {
             str += c.toString() + " ";
         }
         
-        str += "value: " + handValue();
+        str += "value: " + valorDeLaMano();
         
         return str;
     }

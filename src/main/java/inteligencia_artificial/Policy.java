@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface Policy {
     
-    public Action chooseAction (Game gameState, Player p, List<Action> actions);
-    public void observe(Game state, Action action, Player p, Game nextState, int reward);
+    public Accion elegirAccion(Juego gameState, Jugador jugador, List<Accion> listaDeAcciones);
+    public void observe(Juego state, Accion accion, Jugador jugador, Juego nextState, int reward);
 }

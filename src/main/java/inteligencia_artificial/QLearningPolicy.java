@@ -25,13 +25,13 @@ public class QLearningPolicy implements Policy {
     }
    
     @Override
-    public Action chooseAction(Game gameState, Player p, List<Action> legalActions) {
+    public Accion elegirAccion(Juego gameState, Jugador p, List<Accion> legalActions) {
         
         if (legalActions.isEmpty())
             throw new RuntimeException("No actions to perform!");
 
         if(BlackjackUtil.getNumber() < epsilon){
-            return BlackjackUtil.getRandomAction(legalActions);
+            return BlackjackUtil.getAccionRandom(legalActions);
         }
         else{
             return getActionFromQValues(gameState, p, legalActions);
@@ -39,10 +39,10 @@ public class QLearningPolicy implements Policy {
     }
     
     @Override
-    public void observe(Game state, Action action, Player p, Game nextState, int reward) {
+    public void observe(Juego state, Accion accion, Jugador p, Juego nextState, int reward) {
 
-        PointsState ps = getPointState(state, p, action);
-        PointsState nps = getPointState(nextState, p, action);
+        PointsState ps = getPointState(state, p, accion);
+        PointsState nps = getPointState(nextState, p, accion);
 
         double qValue = getQValue(ps);
         double nextStateValue ;
@@ -53,8 +53,8 @@ public class QLearningPolicy implements Policy {
             nextStateValue = getValueFromQValues(nextState, p);
         }
         
-        double prevWeightedValue = (1.0 - Configuration.alpha) * qValue;//-32
-        double weightedValue = Configuration.alpha * (reward + nextStateValue);//-20
+        double prevWeightedValue = (1.0 - Configuracion.alpha) * qValue;//-32
+        double weightedValue = Configuracion.alpha * (reward + nextStateValue);//-20
         double newValue = prevWeightedValue + weightedValue;//-36
 
         qValues.put(ps, newValue);
@@ -69,12 +69,12 @@ public class QLearningPolicy implements Policy {
         return 0.0;
     }
 
-    private Double getValueFromQValues(Game state, Player p){
+    private Double getValueFromQValues(Juego state, Jugador p){
         double maxValue = Double.NEGATIVE_INFINITY;
-        List<Action> legalActions = state.getNextActions();
+        List<Accion> legalActions = state.getNextActions();
 
-        for (Action action: legalActions){
-            PointsState ps = getPointState(state, p, action);
+        for (Accion accion : legalActions){
+            PointsState ps = getPointState(state, p, accion);
             double psQValue = getQValue(ps);
             if (psQValue > maxValue){
                 maxValue = psQValue;
@@ -85,23 +85,23 @@ public class QLearningPolicy implements Policy {
 
     }
 
-    private Action getActionFromQValues(Game state, Player p, List<Action> legalActions){
+    private Accion getActionFromQValues(Juego state, Jugador p, List<Accion> legalActions){
         // default action
-        Action maxAction = null;
+        Accion maxAction = null;
         double maxValue = Double.NEGATIVE_INFINITY;
 
-        for (Action action: legalActions){
-            PointsState ps = getPointState(state, p, action);
+        for (Accion accion : legalActions){
+            PointsState ps = getPointState(state, p, accion);
             double psQValue = getQValue(ps);
             
             if (psQValue > maxValue){
                 maxValue = psQValue;
-                maxAction = action;
+                maxAction = accion;
             }
         }
         
         if (maxAction == null) {
-            return BlackjackUtil.getRandomAction(legalActions);
+            return BlackjackUtil.getAccionRandom(legalActions);
         }
         
         return maxAction;
@@ -119,7 +119,7 @@ public class QLearningPolicy implements Policy {
         }
     }
     
-    private PointsState getPointState(Game state, Player p, Action action){
+    private PointsState getPointState(Juego state, Jugador p, Accion accion){
 
         Hand h = state.getHandFromPlayer(p);
         
@@ -133,11 +133,11 @@ public class QLearningPolicy implements Policy {
                else if (c.cartaBaja()) { cc ++; }
            }
             
-            return new PointsState(h.numberOfAces(), h.handValueWithoutAces(), action, cc);
+            return new PointsState(h.numberOfAces(), h.handValueWithoutAces(), accion, cc);
         }
         else {
         
-            return new PointsState(h.numberOfAces(), h.handValueWithoutAces(), action);
+            return new PointsState(h.numberOfAces(), h.handValueWithoutAces(), accion);
         }
     }
 }

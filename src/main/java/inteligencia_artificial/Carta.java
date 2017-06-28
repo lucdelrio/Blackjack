@@ -85,7 +85,7 @@ public class Carta {
      * The String-representation of the Carta
      */
     public String toString () {
-        return paloString() + " " + numeroString();
+        return numeroString() + paloString();
     }
 
     // private
@@ -169,10 +169,4 @@ public class Carta {
     public int getCartaEntero() {
         return numeroCarta();
     }
-
-    String[] VALUES = {
-            "As", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-            "J", "Q", "K"
-    };
-
 }
