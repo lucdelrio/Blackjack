@@ -7,8 +7,8 @@ public class BancaPolicy implements Policy {
     @Override
     public Accion elegirAccion(Juego estadoDelJuego, Jugador jugadorActual, List<Accion> actions) {
         
-        int mejorValor = estadoDelJuego.getBestHandValue();
-        int valorManoActual = estadoDelJuego.getHandFromPlayer(jugadorActual).valorDeLaMano();
+        int mejorValor = estadoDelJuego.getValorDeLaMejorMano();
+        int valorManoActual = estadoDelJuego.getManoDeJugador(jugadorActual).valorDeLaMano();
         
         if (valorManoActual > mejorValor || valorManoActual > 16) {
             

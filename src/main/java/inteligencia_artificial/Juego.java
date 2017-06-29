@@ -61,7 +61,7 @@ class Juego implements Cloneable {
         this.mesa = mesa;
     }
     
-    public int getBestHandValue () {
+    public int getValorDeLaMejorMano() {
         
         int value = 0;
         for (int i=0; i<(hands.size()-1); i++) {
@@ -80,7 +80,7 @@ class Juego implements Cloneable {
      * @param p - a player involved in the game
      * @return the player's hand
      */
-    public Mano getHandFromPlayer(Jugador p) {
+    public Mano getManoDeJugador(Jugador p) {
 
         for (Mano h : hands) {
             if (p.equals(h.getJugador())) {
@@ -124,7 +124,7 @@ class Juego implements Cloneable {
 
         if (hasGameEnded()) {
 
-            Mano h = getHandFromPlayer(p);
+            Mano h = getManoDeJugador(p);
             Mano dealer = hands.get(hands.size() - 1);
 
             return calculateReward(h, dealer);
@@ -162,7 +162,7 @@ class Juego implements Cloneable {
 
         Juego clonedGame = this.clone();
 
-        Mano h = clonedGame.getHandFromPlayer(p);
+        Mano h = clonedGame.getManoDeJugador(p);
 
         if (a == Accion.Pedir) {
 

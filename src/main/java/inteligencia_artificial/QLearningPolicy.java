@@ -121,7 +121,7 @@ public class QLearningPolicy implements Policy {
     
     private PointsState getPointState(Juego state, Jugador p, Accion accion){
 
-        Mano h = state.getHandFromPlayer(p);
+        Mano h = state.getManoDeJugador(p);
         
         if (this.isCountingPolicy) {
             

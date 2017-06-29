@@ -54,12 +54,12 @@ public class Jugador {
         
         String str = "Observing: ";
         
-        Mano pHand = g.getHandFromPlayer(p);
+        Mano pHand = g.getManoDeJugador(p);
         
         str += p.toString() ;
         str += " takes accion: " + accion;
         str += "\nwith hand " + pHand;
-        str += "\nleading to hand " + nextState.getHandFromPlayer(p);
+        str += "\nleading to hand " + nextState.getManoDeJugador(p);
         str += "\nearning reward " + reward;
         
         if (pHand.valorDeLaMano() == 18 && pHand.cantidadDeAses() == 0 && accion == Accion.Pedir) {
