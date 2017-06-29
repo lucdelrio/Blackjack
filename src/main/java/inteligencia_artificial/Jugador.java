@@ -54,7 +54,7 @@ public class Jugador {
         
         String str = "Observing: ";
         
-        Hand pHand = g.getHandFromPlayer(p);
+        Mano pHand = g.getHandFromPlayer(p);
         
         str += p.toString() ;
         str += " takes accion: " + accion;
@@ -62,7 +62,7 @@ public class Jugador {
         str += "\nleading to hand " + nextState.getHandFromPlayer(p);
         str += "\nearning reward " + reward;
         
-        if (pHand.valorDeLaMano() == 18 && pHand.numberOfAces() == 0 && accion == Accion.Pedir) {
+        if (pHand.valorDeLaMano() == 18 && pHand.cantidadDeAses() == 0 && accion == Accion.Pedir) {
         
             if (reward > 0) {
                 

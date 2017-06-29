@@ -121,7 +121,7 @@ public class QLearningPolicy implements Policy {
     
     private PointsState getPointState(Juego state, Jugador p, Accion accion){
 
-        Hand h = state.getHandFromPlayer(p);
+        Mano h = state.getHandFromPlayer(p);
         
         if (this.isCountingPolicy) {
             
@@ -133,11 +133,11 @@ public class QLearningPolicy implements Policy {
                else if (c.cartaBaja()) { cc ++; }
            }
             
-            return new PointsState(h.numberOfAces(), h.handValueWithoutAces(), accion, cc);
+            return new PointsState(h.cantidadDeAses(), h.valorDeLaManoSinAses(), accion, cc);
         }
         else {
         
-            return new PointsState(h.numberOfAces(), h.handValueWithoutAces(), accion);
+            return new PointsState(h.cantidadDeAses(), h.valorDeLaManoSinAses(), accion);
         }
     }
 }

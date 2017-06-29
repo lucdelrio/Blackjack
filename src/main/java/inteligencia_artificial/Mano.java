@@ -3,33 +3,33 @@ package inteligencia_artificial;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Hand implements Cloneable {
+public class Mano implements Cloneable {
 
     private final Jugador jugador;
     private final List<Carta> cartas;
-    private boolean stay;
+    private boolean plantarse;
     
-    Hand(Jugador p) {
+    Mano(Jugador p) {
         
         jugador = p;
         cartas = new ArrayList<Carta>();
     }
     
-    private Hand (Jugador p, List<Carta> cs, boolean stay) {
+    private Mano(Jugador unJugador, List<Carta> cartasDisponibles, boolean plantarse) {
         
-        this.jugador = p;
-        this.cartas = cs;
-        this.stay = stay;
+        this.jugador = unJugador;
+        this.cartas = cartasDisponibles;
+        this.plantarse = plantarse;
     }
     
-    public void addCard(Carta c) {
+    public void agregarCarta(Carta c) {
         
         cartas.add(c);
     }
     
     public void clearCards () {
         cartas.clear();
-        stay = false;
+        plantarse = false;
     }
     
     public List<Carta> getCartas() {
@@ -46,32 +46,32 @@ public class Hand implements Cloneable {
         return jugador;
     }
     
-    public boolean isStay () {
-        return stay;
+    public boolean getPlantarse() {
+        return plantarse;
     }
     
-    public void setIsStay (boolean s) {
-        stay = s;
+    public void setPlantarse(boolean s) {
+        plantarse = s;
     }
     
     /**
      * @return true iff jugador's hand has gone bust
      */
-    public boolean isBust () {
+    public boolean partidaPerdida() {
         return valorDeLaMano() > 21;
     }
     
     /**
      * @return true iff jugador's hand is a blackjack
      */
-    public boolean isBlackjack () {
+    public boolean blackJack() {
         return cartas.size() == 2 && valorDeLaMano() == 21;
     }
     
     /**
      * @return true iff the jugador's hand value is 21
      */
-    public boolean isTwentyOne () {
+    public boolean suma21() {
         return valorDeLaMano() == 21;
     }
     
@@ -80,26 +80,26 @@ public class Hand implements Cloneable {
      */
     public int valorDeLaMano() {
         
-        int fixedValue = handValueWithoutAces();
-        int numberOfAces = numberOfAces();
+        int valorCartasSinAses = valorDeLaManoSinAses();
+        int cantidadDeAses = cantidadDeAses();
         
-        int totalValueWithOneAceMax = fixedValue + numberOfAces + 10;
-        int totalValueWithAllAcesMin = fixedValue + numberOfAces;
+        int valorTotalConAs11 = valorCartasSinAses + cantidadDeAses + 10;
+        int valorTotalConAs1 = valorCartasSinAses + cantidadDeAses;
 
-        if (numberOfAces == 0) {
-            return fixedValue;
+        if (cantidadDeAses == 0) {
+            return valorCartasSinAses;
         }
-        else if (totalValueWithOneAceMax <= 21) {
-            return totalValueWithOneAceMax;
+        else if (valorTotalConAs11 <= 21) {
+            return valorTotalConAs11;
         }
-        else if (totalValueWithAllAcesMin <= 21) {
-            return totalValueWithAllAcesMin;
+        else if (valorTotalConAs1 <= 21) {
+            return valorTotalConAs1;
         }
         
-        return totalValueWithAllAcesMin;
+        return valorTotalConAs1;
     }
     
-    public int numberOfAces () {
+    public int cantidadDeAses() {
         int number = 0;
         
         for (Carta c : cartas) {
@@ -110,7 +110,7 @@ public class Hand implements Cloneable {
         return number;
     }
     
-    public int handValueWithoutAces () {
+    public int valorDeLaManoSinAses() {
         
         int val = 0;
         
@@ -125,7 +125,7 @@ public class Hand implements Cloneable {
     }
     
     @Override
-    public Hand clone () {
+    public Mano clone () {
         
         List<Carta> clonedCards = new ArrayList<Carta>();
         
@@ -133,12 +133,12 @@ public class Hand implements Cloneable {
             clonedCards.add(c.clonarCarta());
         }
         
-        return new Hand(this.jugador, clonedCards, this.stay);
+        return new Mano(this.jugador, clonedCards, this.plantarse);
     }
     
     @Override
     public String toString () {
-        String str = "Hand: ";
+        String str = "Mano: ";
         
         for (Carta c : cartas) {
             str += c.toString() + " ";
