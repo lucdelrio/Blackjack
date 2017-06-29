@@ -270,13 +270,13 @@ class Juego implements Cloneable {
     private int calculateReward (Mano p, Mano dealerHand) {
 
         if (p.blackJack() && !dealerHand.blackJack()) {
-            return (int)(Configuracion.BetAmount * 1.5);
+            return (int)(Configuracion.CantidadApostada * 1.5);
         }
         else if (p.partidaPerdida() || (!dealerHand.partidaPerdida() && p.valorDeLaMano() < dealerHand.valorDeLaMano())) {
-            return -Configuracion.BetAmount;
+            return -Configuracion.CantidadApostada;
         }
         else if (dealerHand.partidaPerdida() || p.valorDeLaMano() > dealerHand.valorDeLaMano()) {
-            return Configuracion.BetAmount;
+            return Configuracion.CantidadApostada;
         }
 
         return 0;

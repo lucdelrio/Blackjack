@@ -71,7 +71,7 @@ public class Program {
             g = Juego.playRound(g);
             
             // notify players
-            //g.printResult();
+            g.printResult();
             int reward = g.getReward(agent);
             
             if (reward > 0) { wins++; }
