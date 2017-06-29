@@ -138,13 +138,13 @@ public class Mano implements Cloneable {
     
     @Override
     public String toString () {
-        String str = "Mano: ";
+        String str = ": ";
         
         for (Carta c : cartas) {
             str += c.toString() + " ";
         }
         
-        str += "value: " + valorDeLaMano();
+        str += "Total: " + valorDeLaMano();
         
         return str;
     }

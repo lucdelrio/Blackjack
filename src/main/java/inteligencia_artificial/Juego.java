@@ -22,7 +22,7 @@ class Juego implements Cloneable {
         for (Jugador p : ps) {
             this.hands.add(new Mano(p));
         }
-        this.hands.add(new Mano(new Jugador(0, "Dealer")));
+        this.hands.add(new Mano(new Jugador(0, "Banca")));
         turnIndex = 0;
         mesa = new Mesa(2, true);
 
@@ -242,7 +242,7 @@ class Juego implements Cloneable {
         for (Mano h : hands) {
             Jugador p = h.getJugador();
 
-            System.out.print(p + "'s " + h + "\n");
+            System.out.print(p + "" + h + "\n");
         }
 
         Mano dealer = hands.get(hands.size() - 1);
@@ -254,9 +254,9 @@ class Juego implements Cloneable {
                 int r = getReward(p);
                 String result;
 
-                if (r > 0) { result = " wins"; }
-                else if (r < 0) { result = " loses"; }
-                else { result = " draws"; }
+                if (r > 0) { result = " gana"; }
+                else if (r < 0) { result = " piede"; }
+                else { result = " empata"; }
 
                 System.out.println(p.toString() + result);
             }

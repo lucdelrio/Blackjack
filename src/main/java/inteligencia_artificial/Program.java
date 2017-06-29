@@ -10,7 +10,7 @@ public class Program {
         int games               = 500;
        
         QLearningPolicy qPolicy = new QLearningPolicy(false);
-        Jugador agent = new Jugador(0, "Agent" , qPolicy );
+        Jugador agent = new Jugador(0, "Humano" , qPolicy );
         
         System.out.println("******** Training ********");
         
@@ -32,7 +32,7 @@ public class Program {
         qPolicy.printQValues();
         qPolicy.setEpsion(0.0);
         
-        System.out.println("********* Playing Real Games with " + games + " hands *********");
+        System.out.println("********* Jugando con " + games + " manos *********");
         
         playRealgames(agent, qPolicy, games);
     }
@@ -46,7 +46,7 @@ public class Program {
 
             episode = Juego.playRound(episode);
             
-            //episode.printResult();
+            episode.printResult();
             episode.reset();
             if (episode.isLowOnCards()) {
                 episode.redeck();
@@ -58,7 +58,7 @@ public class Program {
     
     public static void playRealgames (Jugador agent, QLearningPolicy policy, int ITERATIONS) {
         
-        int totalBet = 100 * ITERATIONS;
+        int totalBet = 1 * ITERATIONS;
         int totalReward = 0;
         int wins = 0;
         int losses = 0;
@@ -86,10 +86,10 @@ public class Program {
             }
         }
         
-        System.out.println("**** Total Amount Bet: $" + totalBet);
-        System.out.println("**** Total Amount Won: $" + totalReward);
-        System.out.println("**** Total Wins: " + wins);
-        System.out.println("**** Total Losses: " + losses);
-        System.out.println("**** Total Draws: " + draws);
+        System.out.println("**** Total Apostado: $" + totalBet);
+        System.out.println("**** Total Ganado: $" + totalReward);
+        System.out.println("**** Total Gana: " + wins);
+        System.out.println("**** Total Pierde: " + losses);
+        System.out.println("**** Total Empata: " + draws);
     }
 }
