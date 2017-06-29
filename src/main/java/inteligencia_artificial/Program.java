@@ -12,12 +12,12 @@ public class Program {
         QLearningPolicy qPolicy = new QLearningPolicy(false);
         Jugador agent = new Jugador(0, "Humano" , qPolicy );
         
-        System.out.println("******** Training ********");
+        System.out.println("******** Entrenamiento ********");
         
         double epsilon = startEpsilon;
         while (epsilon > endEpsilon) {
             
-            System.out.println("Starting trials of " + learning + " episodes:");
+            System.out.println("Comenzando ensayos de " + learning + " repeticiones:");
             System.out.println("Epsilon: " + epsilon);
             qPolicy.setEpsion(epsilon);
             trainAgent(agent, qPolicy, learning);
@@ -25,9 +25,9 @@ public class Program {
             epsilon -= 0.1;
         }
         
-        System.out.println("******** Training Complete ********");
+        System.out.println("******** Entrenamiento Completado ********");
         
-        System.out.println("********* Q-policy Derived after " + learning + " trials *********");
+        System.out.println("********* Q-policy resultante luego de " + learning + " ensayos *********");
         
         qPolicy.printQValues();
         qPolicy.setEpsion(0.0);
@@ -46,7 +46,7 @@ public class Program {
 
             episode = Juego.playRound(episode);
             
-            episode.printResult();
+            //episode.printResult();
             episode.reset();
             if (episode.isLowOnCards()) {
                 episode.redeck();
